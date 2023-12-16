@@ -17,3 +17,7 @@ def analyze_sentiment(request):
     return render(
         request, "sentiment/sentiment_analysis.html"
     )  # Adjust the path based on your template structure
+
+
+def home(request):
+    return render(request, "sentiment/home.html")
