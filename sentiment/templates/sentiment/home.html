@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
+    {% load static %}
 
     <style>
         body {
@@ -15,60 +16,129 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            justify-content: center;
+            margin: 0;
             background-color: #1a1a1a;
-            color: #fff
-                /* Light background color */
+            color: #fff;
+            overflow: hidden;
+            /* Remove height: 100vh; */
+        }
+
+        nav {
+            background-color: #333;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-right: 1rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2rem;
+            /* Adjust font size */
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #3498db;
+            /* Adjust color on hover */
+        }
+
+        img {
+            width: 20vw;
+            /* Use viewport width for sizing */
+            padding: 4vw;
         }
 
         h1 {
-            font-size: 36px;
+            font-size: 3vw;
+            /* Use viewport width for font size */
             font-weight: bold;
             color: #3498db;
-            /* Dark text color */
         }
 
         p {
-            font-size: 18px;
+            font-size: 1.5vw;
+            /* Use viewport width for font size */
             color: #bbb;
-            /* Medium dark text color */
         }
 
         a {
             text-decoration: none;
         }
 
+        nav a.selected {
+            color: #3498db;
+            /* Adjust color for the selected item */
+        }
+
+
         button {
-            padding: 20px 40px;
-            font-size: 18px;
+            padding: 1vw 2vw;
+            /* Use viewport width for padding */
+            font-size: 1.5vw;
             cursor: pointer;
             background-color: #2980b9;
-            /* Blue button background */
             color: #fff;
-            /* White text color */
             border: none;
             border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            /* Soft box shadow */
+            box-shadow: 0 0.4vw 0.6vw rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
-            /* Smooth background color transition */
-            margin: 50px 0 0 0;
+            margin: 5% 0 0 0;
+            /* Use percentage for top margin */
         }
 
         button:hover {
             background-color: #1c6391;
-            /* Darker blue on hover */
         }
     </style>
+    <script>
+        // Get the current path
+        var currentPath = window.location.pathname;
+
+        // Select the corresponding navigation item based on the path
+        document.addEventListener("DOMContentLoaded", function () {
+            var navItems = document.querySelectorAll('nav a');
+            navItems.forEach(function (item) {
+                // Compare the path parts of the current URL and item's href
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('selected');
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
+    <nav>
+        <ul>
+            <li><a href="/sentiment/">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
     <h1>Welcome to NBA Sentiment</h1>
     <p>Search for NBA Players and view their Sentiment Rating</p>
     <p>Feel free to explore and analyze sentiments!</p>
     <a href="{% url 'analyze_sentiment' %}">
         <button>Analyze Sentiment</button>
     </a>
+    <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="NBA Sentiment Logo">
 </body>
 
 </html>
