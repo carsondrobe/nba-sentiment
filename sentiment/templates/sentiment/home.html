@@ -20,7 +20,7 @@
             margin: 0;
             background-color: #1a1a1a;
             color: #fff;
-            overflow: hidden;
+            min-height: 100vh;
             /* Remove height: 100vh; */
         }
 
@@ -30,6 +30,7 @@
             margin-bottom: 1rem;
             width: 100%;
             box-sizing: border-box;
+            margin: 0;
         }
 
 
@@ -105,6 +106,25 @@
         button:hover {
             background-color: #1c6391;
         }
+
+        .search-bar {
+            text-align: center;
+        }
+
+        form {
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 200px;
+            font-size: 1rem;
+            color: #333;
+        }
     </style>
     <script>
         // Get the current path
@@ -135,8 +155,29 @@
     <h1>Welcome to NBA Sentiment</h1>
     <p>Search for NBA Players and view their Sentiment Rating</p>
     <p>Feel free to explore and analyze sentiments!</p>
-    <a href="{% url 'analyze_sentiment' %}">
-        <button>Analyze Sentiment</button>
+    <div class="search-bar">
+        <form method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+            <input type="text" name="text" placeholder="Search for a Player...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    {% if text %}
+    <p>You searched for: {{ text }}</p>
+    {% endif %}
+
+    {% if player_results %}
+    <p>Player Search Results:</p>
+    <ul>
+        {% for player in player_results %}
+        <li>{{ player.full_name }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No players found.</p>
+    {% endif %}
+    <a href="{% url 'analyze_sentiment' %}?search=" id="analyzeSentimentButton">
+        <button onclick="performSearch()">Analyze Sentiment</button>
     </a>
     <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="NBA Sentiment Logo">
 </body>
