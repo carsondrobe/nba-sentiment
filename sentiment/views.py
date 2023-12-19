@@ -21,7 +21,7 @@ def analyze_sentiment(request):
 
 
 def home(request):
-    text = request.POST.get("text", "")
+    text = request.POST.get("player_name", "")
     player_results = []
 
     if request.method == "POST" and text:
