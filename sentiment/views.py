@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from nltk.sentiment import SentimentIntensityAnalyzer
-from nba_api.stats.static import players
+from nba_api.stats.static import teams
 
 
 def analyze_sentiment(request):
@@ -21,13 +21,13 @@ def analyze_sentiment(request):
 
 
 def home(request):
-    text = request.POST.get("player_name", "")
-    player_results = []
+    text = request.POST.get("teams_name", "")
+    teams_results = []
 
     if request.method == "POST" and text:
         # Find players by full name using nba_api
-        player_results = players.find_players_by_full_name(text)
+        teams_results = teams.find_teams_by_full_name(text)
 
     return render(
-        request, "sentiment/home.html", {"text": text, "player_results": player_results}
+        request, "sentiment/home.html", {"text": text, "teams_results": teams_results}
     )

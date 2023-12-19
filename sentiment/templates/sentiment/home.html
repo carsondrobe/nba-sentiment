@@ -172,12 +172,12 @@
         <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="nbaSentimentLogo" id="navbarLogo">
     </nav>
     <h1>Welcome to NBA Sentiment</h1>
-    <p>Search for NBA Players and view their Sentiment Rating</p>
+    <p>Search for NBA Teams and view their Sentiment Rating</p>
     <p>Feel free to explore and analyze sentiments!</p>
     <div class="search-bar">
         <form method="post" action="{% url 'home' %}">
             {% csrf_token %}
-            <input type="text" name="player_name" placeholder="Search for a Player...">
+            <input type="text" name="teams_name" placeholder="Search for a Team...">
             <button type="submit">Search</button>
         </form>
     </div>
@@ -185,15 +185,15 @@
     <p>You searched for: {{ text }}</p>
     {% endif %}
 
-    {% if player_results %}
-    <p>Player Search Results:</p>
+    {% if teams_results %}
+    <p>Team Search Results:</p>
     <ul>
-        {% for player in player_results %}
-        <li>{{ player.full_name }}</li>
+        {% for team in teams_results %}
+        <li>{{ team.full_name }}</li>
         {% endfor %}
     </ul>
     {% else %}
-    <p>No players found.</p>
+    <p>No teams found.</p>
     {% endif %}
     <a href="{% url 'analyze_sentiment' %}?search=" id="analyzeSentimentButton">
         <button onclick="performSearch()">Analyze Sentiment</button>
