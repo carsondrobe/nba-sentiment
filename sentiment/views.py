@@ -5,23 +5,38 @@ from dotenv import load_dotenv
 import os
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
+from statistics import mean
 
 
 def analyze_sentiment(request):
     if request.method == "POST":
-        text = request.POST.get("text", "")
         selected_team = request.POST.get("selected_team", "")
-        youtube_analysis(selected_team)
+        comments = youtube_analysis(selected_team)
+
+        # Join comments into a single string
+        comments_text = "\n".join(comments)
+        print(comments_text)
+
         sia = SentimentIntensityAnalyzer()
-        sentiment_scores = sia.polarity_scores(text)
+
+        # Calculate sentiment scores for each comment
+        comment_sentiments = [sia.polarity_scores(comment) for comment in comments]
+
+        # Calculate average sentiment scores
+        avg_sentiment_scores = {
+            "pos": mean(comment["pos"] for comment in comment_sentiments),
+            "neu": mean(comment["neu"] for comment in comment_sentiments),
+            "neg": mean(comment["neg"] for comment in comment_sentiments),
+            "compound": mean(comment["compound"] for comment in comment_sentiments),
+        }
+        print(avg_sentiment_scores)
 
         return render(
             request,
             "sentiment/sentiment_analysis.html",  # Adjust the path based on your template structure
             {
                 "selected_team": selected_team,
-                "text": text,
-                "sentiment_scores": sentiment_scores,
+                "sentiment_scores": avg_sentiment_scores,
             },
         )
 
@@ -68,7 +83,7 @@ def youtube_analysis(team_name):
             q=f"{team_name} FULL GAME HIGHLIGHTS highlights full game",
             part="id,snippet",
             type="video",
-            maxResults=2,  # Adjust the number of results as needed
+            maxResults=1,  # Adjust the number of results as needed
             channelId="UCWJ2lWNubArHWmf3FIHbfcQ",  # NBA Official Youtube Channel ID
             publishedAfter=published_after,
         )
@@ -86,3 +101,48 @@ def youtube_analysis(team_name):
         video_id_list.append(video_id)
         video_title = video["snippet"]["title"]
         print(f"Video Title: {video_title}, Video ID: {video_id}")
+
+    # TODO: Get Comments from the video IDs
+    query = team_name
+    query_list = query.split()
+    filtered_comments = []
+    for video_id in video_id_list:
+        # Set initial values
+        max_results_per_page = 100
+        total_max_results = 100
+        current_results = 0
+        next_page_token = None
+
+        # Collect comments from multiple pages
+        while current_results < total_max_results:
+            # Calculate the number of results to retrieve on this page
+            remaining_results = total_max_results - current_results
+            results_to_retrieve = min(remaining_results, max_results_per_page)
+
+            # Get comments for the current page
+            comments_response = (
+                youtube.commentThreads()
+                .list(
+                    part="snippet",
+                    videoId=video_id,
+                    textFormat="plainText",
+                    maxResults=results_to_retrieve,
+                    pageToken=next_page_token,  # Include the nextPageToken in the request
+                )
+                .execute()
+            )
+
+            # Extract comments from the current page
+            for comment in comments_response.get("items", []):
+                comment_text = comment["snippet"]["topLevelComment"]["snippet"][
+                    "textDisplay"
+                ]
+                if any(word.lower() in comment_text.lower() for word in query_list):
+                    filtered_comments.append(comment_text)
+                    current_results += 1
+
+            # Check if there are more pages
+            next_page_token = comments_response.get("nextPageToken")
+            if not next_page_token:
+                break
+    return filtered_comments

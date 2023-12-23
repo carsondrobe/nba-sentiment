@@ -160,15 +160,10 @@
 
     <form method="post" action="{% url 'analyze_sentiment' %}">
         {% csrf_token %}
-        <label for="text">Enter text:</label>
-        <textarea name="text" rows="4" cols="50" required></textarea>
-        <br>
         <button type="submit">Analyze Sentiment</button>
     </form>
 
-    {% if text %}
     <h2>Analysis Result:</h2>
-    <p>Text: {{ text }}</p>
     <p>Positive Score: {{ sentiment_scores.pos }}</p>
     <p>Neutral Score: {{ sentiment_scores.neu }}</p>
     <p>Negative Score: {{ sentiment_scores.neg }}</p>
@@ -178,7 +173,6 @@
     {% elif sentiment_scores.compound < -0.3 %} <p style="font-size: 24px; color: red;">BAD</p>
         {% else %}
         <p style="font-size: 24px; color: blue;">NEUTRAL</p>
-        {% endif %}
         {% endif %}
 </body>
 
