@@ -186,19 +186,41 @@
     {% endif %}
 
     {% if teams_results %}
-    <p>Team Search Results:</p>
+    <p>Select from the Search Results:</p>
     <ul>
         {% for team in teams_results %}
-        <li>{{ team.full_name }}</li>
+        <li>
+            <label>
+                <input type="radio" name="selected_team" value="{{ team.full_name }}">
+                {{ team.full_name }}
+            </label>
+        </li>
         {% endfor %}
     </ul>
     {% else %}
     <p>No teams found.</p>
     {% endif %}
-    <a href="{% url 'analyze_sentiment' %}?search=" id="analyzeSentimentButton">
-        <button onclick="performSearch()">Analyze Sentiment</button>
-    </a>
+
+
+    <form method="post" action="{% url 'analyze_sentiment' %}" id="analyzeSentimentForm">
+        {% csrf_token %}
+        <input type="hidden" name="selected_team" id="selectedTeamInput" value="">
+        <button type="button" onclick="performSearch()">Analyze Sentiment</button>
+
+    </form>
+
     <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="NBA Sentiment Logo">
 </body>
+<script>
+    function performSearch() {
+        var selectedTeam = document.querySelector('input[name="selected_team"]:checked');
+        if (selectedTeam) {
+            document.getElementById('selectedTeamInput').value = selectedTeam.value;
+            document.getElementById('analyzeSentimentForm').submit();
+        } else {
+            alert('Please select a team.');
+        }
+    }
+</script>
 
 </html>

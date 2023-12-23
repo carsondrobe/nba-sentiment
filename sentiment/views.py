@@ -8,13 +8,18 @@ import os
 def analyze_sentiment(request):
     if request.method == "POST":
         text = request.POST.get("text", "")
+        selected_team = request.POST.get("selected_team", "")
         sia = SentimentIntensityAnalyzer()
         sentiment_scores = sia.polarity_scores(text)
 
         return render(
             request,
             "sentiment/sentiment_analysis.html",  # Adjust the path based on your template structure
-            {"text": text, "sentiment_scores": sentiment_scores},
+            {
+                "selected_team": selected_team,
+                "text": text,
+                "sentiment_scores": sentiment_scores,
+            },
         )
 
     return render(
