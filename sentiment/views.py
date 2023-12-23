@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nba_api.stats.static import teams
+from dotenv import load_dotenv
+import os
 
 
 def analyze_sentiment(request):
@@ -31,3 +33,11 @@ def home(request):
     return render(
         request, "sentiment/home.html", {"text": text, "teams_results": teams_results}
     )
+
+
+# Run this whenever you need to use the API Key configure()
+
+
+# Then use os.getenv('api_key_name')
+def configure():
+    load_dotenv()
