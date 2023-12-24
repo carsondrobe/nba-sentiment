@@ -164,13 +164,10 @@
     </form>
 
     <h2>Analysis Result:</h2>
-    <p>Positive Score: {{ sentiment_scores.pos }}</p>
-    <p>Neutral Score: {{ sentiment_scores.neu }}</p>
-    <p>Negative Score: {{ sentiment_scores.neg }}</p>
-    <p>Compound Score: {{ sentiment_scores.compound }}</p>
-    {% if sentiment_scores.compound > 0.3 %}
+    <p>Average Score: {{ avg_compound_score }}</p>
+    {% if avg_compound_score > 0.2 %}
     <p style="font-size: 24px; color: green;">GOOD</p>
-    {% elif sentiment_scores.compound < -0.3 %} <p style="font-size: 24px; color: red;">BAD</p>
+    {% elif avg_compound_score < 0.1 %} <p style="font-size: 24px; color: red;">BAD</p>
         {% else %}
         <p style="font-size: 24px; color: blue;">NEUTRAL</p>
         {% endif %}
