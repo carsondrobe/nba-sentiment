@@ -158,19 +158,19 @@
     </nav>
     <h1>{{ selected_team }} Sentiment</h1>
 
-    <form method="post" action="{% url 'analyze_sentiment' %}">
-        {% csrf_token %}
-        <button type="submit">Analyze Sentiment</button>
-    </form>
-
     <h2>Analysis Result:</h2>
     <p>Average Score: {{ avg_compound_score }}</p>
     {% if avg_compound_score > 0.2 %}
     <p style="font-size: 24px; color: green;">GOOD</p>
-    {% elif avg_compound_score < 0.1 %} <p style="font-size: 24px; color: red;">BAD</p>
+    {% elif avg_compound_score < 0.15 %} <p style="font-size: 24px; color: red;">BAD</p>
         {% else %}
         <p style="font-size: 24px; color: blue;">NEUTRAL</p>
         {% endif %}
+
+        <form method="post" action="{% url 'home' %}">
+            {% csrf_token %}
+            <button type="submit">Return Home</button>
+        </form>
 </body>
 
 </html>
