@@ -7,6 +7,7 @@ from googleapiclient.discovery import build
 from datetime import datetime, timedelta
 from statistics import mean
 import spacy
+import numpy as np
 
 
 def configure():
@@ -27,7 +28,7 @@ def fetch_video_ids(youtube, team_name):
             q=f"{team_name} FULL GAME HIGHLIGHTS highlights full game",
             part="id,snippet",
             type="video",
-            maxResults=3,  # Adjust the number of results as needed
+            maxResults=3,  # Adjusts the number of videos
             channelId="UCWJ2lWNubArHWmf3FIHbfcQ",  # NBA Official Youtube Channel ID
             publishedAfter=published_after,
         )
@@ -44,8 +45,9 @@ def fetch_comments(youtube, video_id, nlp, team_name, total_max_results):
     next_page_token = None
 
     while current_results < total_max_results:
-        remaining_results = total_max_results - current_results
-        results_to_retrieve = min(remaining_results, max_results_per_page)
+        results_to_retrieve = min(
+            total_max_results - current_results, max_results_per_page
+        )
 
         comments_response = (
             youtube.commentThreads()
@@ -90,25 +92,24 @@ def analyze_sentiment(request):
             )
 
         comments_text = "\n".join(comments)
-        print(comments_text)
 
         sia = SentimentIntensityAnalyzer()
-        polarity = [sia.polarity_scores(comment)["compound"] for comment in comments]
 
-        positive_comments = [
-            comment for comment, score in zip(comments, polarity) if score > 0.05
-        ]
-        negative_comments = [
-            comment for comment, score in zip(comments, polarity) if score < -0.05
-        ]
-        neutral_comments = [
-            comment
-            for comment, score in zip(comments, polarity)
-            if -0.05 <= score <= 0.05
-        ]
+        polarity = np.array(
+            [sia.polarity_scores(comment)["compound"] for comment in comments]
+        )
 
-        avg_compound_score = mean(polarity)
-        print("Average Compound Score:", avg_compound_score)
+        positive_comments = np.array(comments)[polarity > 0.05].tolist()
+        negative_comments = np.array(comments)[polarity < -0.05].tolist()
+        neutral_comments = np.array(comments)[
+            (polarity >= -0.05) & (polarity <= 0.05)
+        ].tolist()
+
+        avg_compound_score = np.mean(polarity)
+
+        # Normalize to a percentage and round
+        avg_compound_score = ((avg_compound_score - -0.1) / (0.6 - -0.1)) * (100)
+        avg_compound_score = round(avg_compound_score, 1)
 
         return render(
             request,

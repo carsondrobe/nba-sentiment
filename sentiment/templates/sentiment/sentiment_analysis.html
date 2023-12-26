@@ -24,11 +24,6 @@
         /* Remove height: 100vh; */
     }
 
-    h1 {
-        margin-top: 10vh;
-        /* Adjust this value based on the height of your navbar */
-    }
-
     nav {
         position: fixed;
         background-color: #333;
@@ -72,14 +67,22 @@
     }
 
     h1 {
-        font-size: 3vw;
+        margin-top: 10vh;
+        font-size: 4vw;
         /* Use viewport width for font size */
         font-weight: bold;
         color: #3498db;
     }
 
+    h2 {
+        font-size: 2.5vw;
+        /* Larger font size for section headers */
+        color: #bbb;
+        margin-bottom: 2vh;
+    }
+
     p {
-        font-size: 1.5vw;
+        font-size: 1.8vw;
         /* Use viewport width for font size */
         color: #bbb;
     }
@@ -150,8 +153,8 @@
     <nav>
         <ul>
             <li><a href="/sentiment/">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
+            <li><a href="#about">Rankings</a></li>
+            <li><a href="#services">About</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
         <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="nbaSentimentLogo" id="navbarLogo">
@@ -159,18 +162,23 @@
     <h1>{{ selected_team }} Sentiment</h1>
 
     <h2>Analysis Result:</h2>
-    <p>Average Score: {{ avg_compound_score }}</p>
-    {% if avg_compound_score > 0.2 %}
-    <p style="font-size: 24px; color: green;">GOOD</p>
-    {% elif avg_compound_score < 0.15 %} <p style="font-size: 24px; color: red;">BAD</p>
-        {% else %}
-        <p style="font-size: 24px; color: blue;">NEUTRAL</p>
-        {% endif %}
+    <p>Fan Sentiment: {{ avg_compound_score }}% support</p>
+    {% if avg_compound_score > 75 %}
+    <p style="font-size: 3vw; color: #00ff6a;">Very Positive! 🔥</p>
+    {% elif avg_compound_score > 60 %}
+    <p style="font-size: 3vw; color: #6aff6f;">Positive 👍</p>
+    {% elif avg_compound_score > 50 %}
+    <p style="font-size: 3vw; color: #3498db;">Neutral 🤷</p>
+    {% elif avg_compound_score > 25 %}
+    <p style="font-size: 3vw; color: #ff6a59;">Negative 👎</p>
+    {% else %}
+    <p style="font-size: 3vw; color: #ff1900;">Very Negative! 🗑️</p>
+    {% endif %}
 
-        <form method="post" action="{% url 'home' %}">
-            {% csrf_token %}
-            <button type="submit">Return Home</button>
-        </form>
+    <form method="post" action="{% url 'home' %}">
+        {% csrf_token %}
+        <button type="submit">Return Home</button>
+    </form>
 </body>
 
 </html>
