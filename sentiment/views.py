@@ -173,3 +173,7 @@ def run_sentiment_analysis_for_all_teams():
 
 # Uncomment the line below to run sentiment analysis for all NBA teams (UPDATE DATABASE)
 # run_sentiment_analysis_for_all_teams()
+
+
+def rankings(request):
+    return render(request, "sentiment/rankings.html")
