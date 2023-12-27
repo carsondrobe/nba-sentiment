@@ -33,6 +33,7 @@ NBA Sentiment Analysis is a Django web application designed to provide insights 
 - Django
 - NLTK
 - spaCy
+- NumPy
 - Google API Client
 
 ## Getting Started
