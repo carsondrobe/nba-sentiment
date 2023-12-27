@@ -11,6 +11,8 @@ import numpy as np
 from .models import TeamSentiment
 from django.db import IntegrityError
 
+last_update_time = "2023-12-27 1:25:00"
+
 
 def configure():
     load_dotenv()
@@ -169,6 +171,7 @@ def run_sentiment_analysis_for_all_teams():
             except IntegrityError:
                 # Handle the case where another thread or process created the same record concurrently
                 pass
+    last_update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 # Uncomment the line below to run sentiment analysis for all NBA teams (UPDATE DATABASE)
@@ -176,4 +179,11 @@ def run_sentiment_analysis_for_all_teams():
 
 
 def rankings(request):
-    return render(request, "sentiment/rankings.html")
+    # Fetch all team sentiment data, ordered by average compound score
+    team_sentiments = TeamSentiment.objects.all().order_by("-avg_compound_score")
+
+    return render(
+        request,
+        "sentiment/rankings.html",
+        {"team_sentiments": team_sentiments, "last_update_time": last_update_time},
+    )

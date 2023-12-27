@@ -140,8 +140,28 @@
             /* Adjust as needed */
         }
 
-        #analyzeSentimentForm {
-            margin-top: 1%;
+        table {
+            width: 80%;
+            margin: 2% auto;
+            border-collapse: collapse;
+            border: 2px solid #3498db;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #3498db;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2f2;
+            color: #1a1a1a;
         }
     </style>
     <script>
@@ -172,6 +192,26 @@
         <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="nbaSentimentLogo" id="navbarLogo">
     </nav>
     <h1>Team Sentiment Rankings</h1>
+    <p>Rankings Last Updated: {{ last_update_time }}</p>
+    <p>Based on Last 7 Days</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Team Name</th>
+                <th>Sentiment Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team_sentiment in team_sentiments %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ team_sentiment.team_name }}</td>
+                <td>{{ team_sentiment.avg_compound_score }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 </body>
 
