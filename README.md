@@ -19,6 +19,8 @@ NBA Sentiment Analysis is a Django web application designed to provide insights 
 
 - **Dynamic Thresholds:**
   - Fine-tuned polarity score thresholds for accurate categorization of sentiment related to an NBA team.
+- **Team Sentiment Rankings:**
+  - Generates rankings of NBA teams based on fan sentiment scores. See the latest rankings to understand how teams are perceived by YouTube commenters.
 
 ## How to Use
 
