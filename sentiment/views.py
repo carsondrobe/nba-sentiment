@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 from statistics import mean
 import spacy
 import numpy as np
+from .models import TeamSentiment
+from django.db import IntegrityError
 
 
 def configure():
@@ -81,46 +83,19 @@ def fetch_comments(youtube, video_id, nlp, team_name, total_max_results):
 def analyze_sentiment(request):
     if request.method == "POST":
         selected_team = request.POST.get("selected_team", "")
-        youtube = initialize_youtube_api()
-        video_ids = fetch_video_ids(youtube, selected_team)
-        nlp = spacy.load("en_core_web_sm")
 
-        comments = []
-        for video_id in video_ids:
-            comments += fetch_comments(
-                youtube, video_id, nlp, selected_team, total_max_results=250
-            )
+        # Get team data from Database
+        existing_team_sentiment = TeamSentiment.objects.filter(
+            team_name=selected_team
+        ).first()
 
-        comments_text = "\n".join(comments)
-
-        sia = SentimentIntensityAnalyzer()
-
-        polarity = np.array(
-            [sia.polarity_scores(comment)["compound"] for comment in comments]
-        )
-
-        positive_comments = np.array(comments)[polarity > 0.05].tolist()
-        negative_comments = np.array(comments)[polarity < -0.05].tolist()
-        neutral_comments = np.array(comments)[
-            (polarity >= -0.05) & (polarity <= 0.05)
-        ].tolist()
-
-        avg_compound_score = np.mean(polarity)
-
-        # Normalize to a percentage and round
-        avg_compound_score = ((avg_compound_score - -0.1) / (0.6 - -0.1)) * (100)
-        avg_compound_score = round(avg_compound_score, 1)
+        # Get the compound score
+        avg_compound_score = existing_team_sentiment.avg_compound_score
 
         return render(
             request,
             "sentiment/sentiment_analysis.html",
-            {
-                "selected_team": selected_team,
-                "avg_compound_score": avg_compound_score,
-                "positive_comments": positive_comments,
-                "negative_comments": negative_comments,
-                "neutral_comments": neutral_comments,
-            },
+            {"selected_team": selected_team, "avg_compound_score": avg_compound_score},
         )
 
     return render(request, "sentiment/sentiment_analysis.html")
@@ -136,3 +111,65 @@ def home(request):
     return render(
         request, "sentiment/home.html", {"text": text, "teams_results": teams_results}
     )
+
+
+def run_sentiment_analysis_for_all_teams():
+    # Get all NBA teams
+    nba_teams = teams.get_teams()
+
+    # Initialize YouTube API
+    youtube = initialize_youtube_api()
+
+    # Initialize spaCy
+    nlp = spacy.load("en_core_web_sm")
+
+    for team in nba_teams:
+        team_name = team["full_name"]
+
+        # Fetch video ids for the current team
+        video_ids = fetch_video_ids(youtube, team_name)
+
+        # Fetch comments and perform sentiment analysis
+        comments = []
+        for video_id in video_ids:
+            comments += fetch_comments(
+                youtube, video_id, nlp, team_name, total_max_results=250
+            )
+
+        comments_text = "\n".join(comments)
+
+        sia = SentimentIntensityAnalyzer()
+
+        polarity = np.array(
+            [sia.polarity_scores(comment)["compound"] for comment in comments]
+        )
+
+        avg_compound_score = np.mean(polarity)
+
+        # Normalize to a percentage and round
+        avg_compound_score = ((avg_compound_score - -0.1) / (0.6 - -0.1)) * (100)
+        avg_compound_score = round(avg_compound_score, 1)
+
+        # Check for duplicate team name
+        existing_team_sentiment = TeamSentiment.objects.filter(
+            team_name=team_name
+        ).first()
+
+        if existing_team_sentiment:
+            # Update the existing record if necessary
+            existing_team_sentiment.avg_compound_score = avg_compound_score
+            existing_team_sentiment.save()
+        else:
+            # Create a new record if no duplicate is found
+            team_sentiment = TeamSentiment(
+                team_name=team_name, avg_compound_score=avg_compound_score
+            )
+            try:
+                team_sentiment.save()
+            except IntegrityError:
+                # Handle the case where another thread or process created the same record concurrently
+                pass
+
+
+# Uncomment the line below to run sentiment analysis for all NBA teams (UPDATE DATABASE)
+# run_sentiment_analysis_for_all_teams()
