@@ -1,0 +1,54 @@
+<!-- sentiment/templates/sentiment/about.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'sentiment/css/main_screens.css' %}">
+
+    <script>
+        // Get the current path
+        var currentPath = window.location.pathname;
+
+        // Select the corresponding navigation item based on the path
+        document.addEventListener("DOMContentLoaded", function () {
+            var navItems = document.querySelectorAll('nav a');
+            navItems.forEach(function (item) {
+                // Compare the path parts of the current URL and item's href
+                if (item.getAttribute('href') === currentPath) {
+                    item.classList.add('selected');
+                }
+            });
+        });
+    </script>
+</head>
+
+<style>
+    p {
+        margin-left: 2%;
+        margin-right: 2%;
+        text-align: center;
+    }
+</style>
+
+<body>
+    {% include 'navbar.html' %}
+    <h1>About NBA Sentiment</h1>
+    <p>Welcome to NBA Sentiment, your go-to platform for exploring the sentiments and emotions surrounding NBA teams. We
+        analyze and aggregate social media data to provide you with insights into the current
+        sentiment of the NBA community.</p>
+
+    <p>Whether you're a dedicated fan, sports analyst, or just curious about the emotional pulse of the NBA,
+        our platform offers a unique perspective on how people are feeling about NBA teams.</p>
+
+    <p>Stay tuned for real-time updates, trends, and visualizations that reflect the ever-changing sentiments
+        within the NBA community. Let's dive into the emotions that make NBA basketball an entertaining experience!</p>
+
+</body>
+
+</html>

@@ -187,3 +187,7 @@ def rankings(request):
         "sentiment/rankings.html",
         {"team_sentiments": team_sentiments, "last_update_time": last_update_time},
     )
+
+
+def about(request):
+    return render(request, "sentiment/about.html")

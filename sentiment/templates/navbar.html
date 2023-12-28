@@ -1,0 +1,64 @@
+{% load static %}
+
+<style>
+    nav {
+        position: fixed;
+        background-color: #333;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
+
+    nav li {
+        margin-right: 1rem;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 1.2rem;
+        /* Adjust font size */
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+        color: #3498db;
+        /* Adjust color on hover */
+    }
+
+    nav a.selected {
+        color: #3498db;
+        /* Adjust color for the selected item */
+    }
+
+    #navbarLogo {
+        position: absolute;
+        top: -55px;
+        /* Adjust as needed */
+        right: 10px;
+        /* Adjust as needed */
+        width: 50px;
+        /* Adjust as needed */
+        height: 50px;
+        /* Adjust as needed */
+    }
+</style>
+<nav>
+    <ul>
+        <li><a href="/sentiment/">Home</a></li>
+        <li><a href="/sentiment/rankings/">Rankings</a></li>
+        <li><a href="/sentiment/about/">About</a></li>
+    </ul>
+    <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="nbaSentimentLogo" id="navbarLogo">
+</nav>
