@@ -35,6 +35,16 @@
             background-color: #f2f2f2f2;
             color: #1a1a1a;
         }
+
+        .team-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .team-link:hover {
+            color: #3498db;
+            /* Adjust color on hover */
+        }
     </style>
     <script>
         // Get the current path
@@ -67,11 +77,12 @@
             </tr>
         </thead>
         <tbody>
-            {% for team_sentiment in team_sentiments %}
+            {% for team in team_sentiments %}
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ team_sentiment.team_name }}</td>
-                <td>{{ team_sentiment.avg_compound_score }}%</td>
+                <td><a href="{% url 'team_detail' team_name=team.team_name %}" class="team-link">{{ team.team_name}}</a>
+                </td>
+                <td>{{ team.avg_compound_score }}%</td>
             </tr>
             {% endfor %}
         </tbody>

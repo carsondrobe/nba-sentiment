@@ -1,4 +1,4 @@
-<!-- sentiment/templates/sentiment/analyze_sentiment.html -->
+<!-- sentiment/templates/sentiment/team_detail.html -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentiment Analysis</title>
+    <title>Team Detail</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
     {% load static %}
     <link rel="stylesheet" href="{% static 'sentiment/css/sentiment_analysis.css' %}">
@@ -18,26 +18,21 @@
 
 <body>
     {% include 'navbar.html' %}
-    <h1>{{ selected_team }} Sentiment</h1>
+    <h1>{{ team }} Sentiment</h1>
 
     <h2>Analysis Result:</h2>
-    <p>Fan Sentiment: {{ avg_compound_score }}% support</p>
-    {% if avg_compound_score > 75 %}
+    <p>Fan Sentiment: {{ score }}% support</p>
+    {% if score > 75 %}
     <p style="font-size: 3vw; color: #00ff6a;">Very Positive! 🔥</p>
-    {% elif avg_compound_score > 60 %}
+    {% elif score > 60 %}
     <p style="font-size: 3vw; color: #6aff6f;">Positive 👍</p>
-    {% elif avg_compound_score > 50 %}
+    {% elif score > 50 %}
     <p style="font-size: 3vw; color: #3498db;">Neutral 🤷</p>
-    {% elif avg_compound_score > 25 %}
+    {% elif score > 25 %}
     <p style="font-size: 3vw; color: #ff6a59;">Negative 👎</p>
     {% else %}
     <p style="font-size: 3vw; color: #ff1900;">Very Negative! 🗑️</p>
     {% endif %}
-
-    <form method="post" action="{% url 'home' %}">
-        {% csrf_token %}
-        <button type="submit">Return Home</button>
-    </form>
 </body>
 
 </html>

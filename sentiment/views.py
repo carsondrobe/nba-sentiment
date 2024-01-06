@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nba_api.stats.static import teams
 from dotenv import load_dotenv
@@ -10,6 +10,8 @@ import spacy
 import numpy as np
 from .models import TeamSentiment
 from django.db import IntegrityError
+import schedule
+import time
 
 last_update_time = "2023-12-27 1:25:00"
 
@@ -96,11 +98,11 @@ def analyze_sentiment(request):
 
         return render(
             request,
-            "sentiment/sentiment_analysis.html",
-            {"selected_team": selected_team, "avg_compound_score": avg_compound_score},
+            "sentiment/team_detail.html",
+            {"team": selected_team, "score": avg_compound_score},
         )
 
-    return render(request, "sentiment/sentiment_analysis.html")
+    return render(request, "sentiment/team_detail.html")
 
 
 def home(request):
@@ -152,6 +154,9 @@ def run_sentiment_analysis_for_all_teams():
         avg_compound_score = ((avg_compound_score - -0.1) / (0.6 - -0.1)) * (100)
         avg_compound_score = round(avg_compound_score, 1)
 
+        if avg_compound_score < 0:
+            avg_compound_score = 0
+
         # Check for duplicate team name
         existing_team_sentiment = TeamSentiment.objects.filter(
             team_name=team_name
@@ -191,3 +196,12 @@ def rankings(request):
 
 def about(request):
     return render(request, "sentiment/about.html")
+
+
+def team_detail(request, team_name):
+    team = get_object_or_404(TeamSentiment, team_name=team_name)
+    return render(
+        request,
+        "sentiment/team_detail.html",
+        {"team": team, "score": team.avg_compound_score},
+    )
