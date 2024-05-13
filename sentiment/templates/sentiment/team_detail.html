@@ -1,38 +1,26 @@
-<!-- sentiment/templates/sentiment/team_detail.html -->
+{% extends "sentiment/base.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}Team View{% endblock %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'sentiment/css/sentiment_analysis.css' %}">
+{% endblock %}
+{% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Detail</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins&display=swap">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'sentiment/css/sentiment_analysis.css' %}">
-</head>
-<style>
+<h1>{{ team }} Sentiment</h1>
 
-</style>
+<h2>Analysis Result:</h2>
+<p>Fan Sentiment: {{ score }}% support</p>
+{% if score > 75 %}
+<p style="font-size: 3vw; color: #00ff6a;">Very Positive! 🔥</p>
+{% elif score > 60 %}
+<p style="font-size: 3vw; color: #6aff6f;">Positive 👍</p>
+{% elif score > 50 %}
+<p style="font-size: 3vw; color: #3498db;">Neutral 🤷</p>
+{% elif score > 25 %}
+<p style="font-size: 3vw; color: #ff6a59;">Negative 👎</p>
+{% else %}
+<p style="font-size: 3vw; color: #ff1900;">Very Negative! 🗑️</p>
+{% endif %}
 
-
-<body>
-    {% include 'navbar.html' %}
-    <h1>{{ team }} Sentiment</h1>
-
-    <h2>Analysis Result:</h2>
-    <p>Fan Sentiment: {{ score }}% support</p>
-    {% if score > 75 %}
-    <p style="font-size: 3vw; color: #00ff6a;">Very Positive! 🔥</p>
-    {% elif score > 60 %}
-    <p style="font-size: 3vw; color: #6aff6f;">Positive 👍</p>
-    {% elif score > 50 %}
-    <p style="font-size: 3vw; color: #3498db;">Neutral 🤷</p>
-    {% elif score > 25 %}
-    <p style="font-size: 3vw; color: #ff6a59;">Negative 👎</p>
-    {% else %}
-    <p style="font-size: 3vw; color: #ff1900;">Very Negative! 🗑️</p>
-    {% endif %}
-</body>
-
-</html>
+{% endblock %}

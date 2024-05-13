@@ -1,7 +1,5 @@
 body {
     font-family: 'Poppins', sans-serif;
-    display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     margin: 0;
@@ -36,20 +34,11 @@ a {
 }
 
 button {
-    padding: 1vw 2vw;
-    /* Use viewport width for padding */
     font-size: 1.5vw;
-    cursor: pointer;
     background-color: #2980b9;
     color: #fff;
     border: none;
     border-radius: 5px;
     box-shadow: 0 0.4vw 0.6vw rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
-    margin: 5% 0 0 0;
-    /* Use percentage for top margin */
-}
-
-button:hover {
-    background-color: #1c6391;
 }
