@@ -44,10 +44,10 @@ To get started with NBA Sentiment Analysis, follow these steps:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your_username/NBA-Sentiment-Analysis.git
+git clone https://github.com/carsondrobe/nba-sentiment.git
 
 # Navigate to the project directory
-cd NBA-Sentiment-Analysis
+cd nba-sentiment
 
 # Set up virtual environment
 python -m venv venv
