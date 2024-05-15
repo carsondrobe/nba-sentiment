@@ -4,66 +4,248 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'sentiment/css/home.css' %}">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 1000;
+        background-color: #1a1a1a;
+        color: white;
+        border: 1px solid white;
+    }
+
+    .ui-autocomplete .ui-menu-item {
+        padding: 8px 12p;
+        cursor: pointer;
+    }
+
+    .ui-autocomplete .ui-menu-item:hover {
+        background-color: #373737;
+    }
+
+    .ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+        background: #373737 !important;
+        border: #1a1a1a !important;
+        color: #ffffff !important;
+    }
+
+    body {
+        background-image: url("{% static 'sentiment/nba-background.jpg' %}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: 7rem -2rem;
+    }
+</style>
+<script>
+    $(function () {
+        var availableTags = [
+            "Atlanta Hawks",
+            "Boston Celtics",
+            "Brooklyn Nets",
+            "Charlotte Hornets",
+            "Chicago Bulls",
+            "Cleveland Cavaliers",
+            "Dallas Mavericks",
+            "Denver Nuggets",
+            "Detroit Pistons",
+            "Golden State Warriors",
+            "Houston Rockets",
+            "Indiana Pacers",
+            "LA Clippers",
+            "Los Angeles Lakers",
+            "Memphis Grizzlies",
+            "Miami Heat",
+            "Milwaukee Bucks",
+            "Minnesota Timberwolves",
+            "New Orleans Pelicans",
+            "New York Knicks",
+            "Oklahoma City Thunder",
+            "Orlando Magic",
+            "Philadelphia 76ers",
+            "Phoenix Suns",
+            "Portland Trail Blazers",
+            "Sacramento Kings",
+            "San Antonio Spurs",
+            "Toronto Raptors",
+            "Utah Jazz",
+            "Washington Wizards"
+        ];
+        $("#search-bar").autocomplete({
+            source: availableTags
+        });
+    });
+</script>
 {% endblock %}
 
 {% block content %}
+<div class="row">
+    <div class="col-md-5 welcome">
 
-<h1>Welcome to NBA Sentiment</h1>
-<p>Explore the pulse of NBA teams and dive into how fans perceive their performance.</p>
-<p>Curious about how we calculate fan sentiment ratings? Uncover the details in our About section!</p>
-<div class="row justify-content-center">
-    <div class="col-6">
-        <div class="search-bar">
-            <form method="post" action="{% url 'home' %}">
-                {% csrf_token %}
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="teams_name" placeholder="Search for a team..."
-                        aria-label="Team Name" aria-describedby="button-addon2">
-                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+        <h1>NBA fan data & sentiment analysis </h1>
+        <p class="mb-5 ">Explore the pulse of NBA teams and dive into how fans perceive their performance.</p>
+        <button class="btn btn-light start-btn rounded-pill mb-5">Start analyzing <svg
+                xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                    d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
+            </svg></button>
+        <div class="ticker-container">
+            <section class="d-flex flex-row align-content-center mt-2" id="logo-carousel">
+
+                <div class="ticker-track d-flex flex-row align-content-center" id="track">
+                    <img src="{% static 'sentiment/nbalogos/atl.svg.png' %}" alt="ATL Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/bost.svg.png' %}" alt="bost Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/bulls.svg.png' %}" alt="bulls Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/cavs.svg.png' %}" alt="cavs Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/horn.svg.png' %}" alt="horn Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/det.svg.png' %}" alt="det Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/gsw.svg.png' %}" alt="gsw Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/hou.svg.png' %}" alt="hou Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/lac.svg.png' %}" alt="lac Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/lal.svg.png' %}" alt="lal Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/ind.svg' %}" alt="ind Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mavs.svg.png' %}" alt="mavs Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mem.svg.png' %}" alt="mem Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mia.svg.png' %}" alt="mia Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/min.svg.png' %}" alt="min Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mlk.svg.png' %}" alt="mlk Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nets.png' %}" alt="nets Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nop.svg' %}" alt="nop Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nugs.svg.png' %}" alt="nugs Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nyk.svg.png' %}" alt="nyk Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/okc.svg.png' %}" alt="okc Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/orl.svg.png' %}" alt="orl Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/phi.png' %}" alt="phi Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/phx.svg.png' %}" alt="phx Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/por.svg.png' %}" alt="por Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/sac.svg.png' %}" alt="sac Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/sas.svg.png' %}" alt="sas Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/tor.svg.png' %}" alt="tor Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/utah.png' %}" alt="uta Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/was.svg.png' %}" alt="was Logo" class="ticker-img">
                 </div>
-            </form>
+
+                <div class="ticker-track d-flex flex-row align-content-center" id="track">
+                    <img src="{% static 'sentiment/nbalogos/atl.svg.png' %}" alt="ATL Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/bost.svg.png' %}" alt="bost Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/bulls.svg.png' %}" alt="bulls Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/cavs.svg.png' %}" alt="cavs Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/horn.svg.png' %}" alt="horn Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/det.svg.png' %}" alt="det Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/gsw.svg.png' %}" alt="gsw Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/hou.svg.png' %}" alt="hou Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/lac.svg.png' %}" alt="lac Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/lal.svg.png' %}" alt="lal Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/ind.svg' %}" alt="ind Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mavs.svg.png' %}" alt="mavs Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mem.svg.png' %}" alt="mem Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mia.svg.png' %}" alt="mia Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/min.svg.png' %}" alt="min Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/mlk.svg.png' %}" alt="mlk Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nets.png' %}" alt="nets Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nop.svg' %}" alt="nop Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nugs.svg.png' %}" alt="nugs Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/nyk.svg.png' %}" alt="nyk Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/okc.svg.png' %}" alt="okc Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/orl.svg.png' %}" alt="orl Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/phi.png' %}" alt="phi Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/phx.svg.png' %}" alt="phx Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/por.svg.png' %}" alt="por Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/sac.svg.png' %}" alt="sac Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/sas.svg.png' %}" alt="sas Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/tor.svg.png' %}" alt="tor Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/utah.png' %}" alt="uta Logo" class="ticker-img">
+                    <img src="{% static 'sentiment/nbalogos/was.svg.png' %}" alt="was Logo" class="ticker-img">
+                </div>
+
+            </section>
+            <div class="overlay-left"></div>
+            <div class="overlay-right"></div>
         </div>
+
+
+
     </div>
+    <!-- <div type="button" class="row justify-content-center">
+            <div class="col">
+                <div class="search-bar">
+                    <form method="post" action="{% url 'home' %}" autocomplete="off">
+                        {% csrf_token %}
+                        <div class="input-group mb-3 searchInput">
+                            <input type="text" class="form-control" name="teams_name" placeholder="Search for a team..."
+                                aria-label="Team Name" aria-describedby="button-addon2" id="search-bar">
+                            <div class="resultBox">
+                                 here list are inserted from javascript
+                            </div>
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+    <!-- 
+        {% if text %}
+        <p>You searched for: {{ text }}</p>
+        {% endif %}
+
+        {% if teams_results %}
+        <p>Select from the Search Results:</p>
+        <ul>
+            {% for team in teams_results %}
+            <li class="mb-2 ">
+                <label style="display: flex; align-items: center; justify-content: center;">
+                    <input type="radio" name="selected_team" value="{{ team.full_name }}" style="margin-right: 10px;">
+                    <h4 style="margin: 0;">{{ team.full_name }}</h4>
+                </label>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
+        <form method="post" action="{% url 'analyze_sentiment' %}" id="analyzeSentimentForm">
+            {% csrf_token %}
+            <input type="hidden" name="selected_team" id="selectedTeamInput" value="">
+            <button type="button" class="btn btn-primary btn-lg mt-3 " onclick="performSearch()"
+                id="analyze-btn">Analyze
+                Sentiment</button>
+        </form>
+
+        {% load static %}
+        <img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="NBA Sentiment Logo" class="mt-5 " id="home-logo"> -->
 </div>
+<!-- <div class="col-md top5">
+        <div class="card mt-4 ms-5">
+            <h2 class="card-title">Top 5 Fan Favourites 🔥</h2>
+            <div class="card-body text-start ">
+                <ol class="list-group list-group-numbered list-group-flush">
+                    <li class="list-group-item">Los Angeles Lakers</li>
+                    <li class="list-group-item">Boston Celtics</li>
+                    <li class="list-group-item">Golden State Warriors</li>
+                    <li class="list-group-item">Chicago Bulls</li>
+                    <li class="list-group-item">Miami Heat</li>
+                </ol>
+            </div>
+        </div>
 
-{% if text %}
-<p>You searched for: {{ text }}</p>
-{% endif %}
+        <div class="card mt-4 ms-5">
+            <h2 class="card-title">Bottom 5 Most Disliked 🙁</h2>
+            <div class="card-body text-start ">
+                <ol class="list-group list-group-numbered list-group-flush">
+                    <li class="list-group-item">New York Knicks</li>
+                    <li class="list-group-item">Houston Rockets</li>
+                    <li class="list-group-item">Dallas Mavericks</li>
+                    <li class="list-group-item">Philadelphia 76ers</li>
+                    <li class="list-group-item">San Antonio Spurs</li>
+                </ol>
+            </div>
+        </div>
+    </div> -->
 
-{% if teams_results %}
-<p>Select from the Search Results:</p>
-<ul>
-    {% for team in teams_results %}
-    <li>
-        <label>
-            <input type="radio" name="selected_team" value="{{ team.full_name }}">
-            {{ team.full_name }}
-        </label>
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-
-<form method="post" action="{% url 'analyze_sentiment' %}" id="analyzeSentimentForm">
-    {% csrf_token %}
-    <input type="hidden" name="selected_team" id="selectedTeamInput" value="">
-    <button type="button" class="btn btn-primary btn-lg" onclick="performSearch()" id="analyze-btn">Analyze
-        Sentiment</button>
-</form>
-
-{% load static %}
-<img src="{% static 'sentiment/nbaSentimentLogo.png' %}" alt="NBA Sentiment Logo">
-
-<script>
-    function performSearch() {
-        var selectedTeam = document.querySelector('input[name="selected_team"]:checked');
-        if (selectedTeam) {
-            document.getElementById('selectedTeamInput').value = selectedTeam.value;
-            document.getElementById('analyzeSentimentForm').submit();
-        } else {
-            alert('Please select a team.');
-        }
-    }
-</script>
+</div>
 {% endblock %}

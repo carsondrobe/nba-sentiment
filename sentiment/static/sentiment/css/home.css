@@ -1,8 +1,109 @@
-#analyze-btn {
-    background-color: #2980b9;
-    border-color: #2980b9;
+.start-btn {
+    height: 3em;
+    font-weight: 500;
 }
+
 
 ul {
     list-style-type: none;
+}
+
+#home-logo {
+    width: 30%;
+}
+
+h1 {
+    font-size: 3.5em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-weight: bold;
+}
+
+h2 {
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    background-color: #1a1a1a;
+    color: white;
+    border: 1px solid white;
+}
+
+.ui-autocomplete .ui-menu-item {
+    padding: 8px 12p;
+    cursor: pointer;
+}
+
+
+
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+    background: #373737 !important;
+    border: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+#logo-carousel {
+    overflow: hidden;
+}
+
+.ticker-track {
+    max-width: unset;
+    animation: ticker 60s linear infinite;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+}
+
+.ticker-img {
+    width: auto;
+    height: 60px;
+    padding: 1rem;
+}
+
+@keyframes ticker {
+
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.ticker-container {
+    position: relative;
+}
+
+.overlay-left {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(to right, black, transparent);
+    background-size: 20% 100%, 20% 100%, cover;
+    background-position: left center, right center, center center;
+    background-repeat: no-repeat;
+}
+
+.overlay-right {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    right: 0px;
+    background-image: linear-gradient(to left, black, transparent);
+    background-size: 20% 100%, 20% 100%, cover;
+    background-position: right center, center center;
+    background-repeat: no-repeat;
 }
