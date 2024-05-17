@@ -8,3 +8,8 @@ class TeamSentiment(models.Model):
 
     def __str__(self):
         return self.team_name
+
+
+class NBATeam(models.Model):
+    team_name = models.CharField(max_length=255)
+    logo = models.ImageField(upload_to="logos/")

@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from statistics import mean
 import spacy
 import numpy as np
-from .models import TeamSentiment
+from .models import NBATeam, TeamSentiment
 from django.db import IntegrityError
 import schedule
 import time
@@ -213,5 +213,11 @@ def analysis(request):
 
 
 def get_team_data(request):
-    html = "Team Data"
+    team = NBATeam.objects.get(team_name=request.GET.get("team_name"))
+    team_name = team.team_name
+    team_logo = team.logo.url
+    html = f"""<div class="d-flex align-items-center">
+                <h2 class="mr-2">{ team_name }</h2>
+                <img src="{ team_logo }" alt="Team Logo" style="max-width: 100px;">
+            </div>"""
     return HttpResponse(html)
