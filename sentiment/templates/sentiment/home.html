@@ -100,9 +100,9 @@
 
             <h1 class="title">NBA fan data & sentiment analysis </h1>
             <p class="mb-5 ">Explore the pulse of NBA teams and dive into how fans perceive their performance.</p>
-            <button class="btn btn-light start-btn rounded-pill mb-5">Start analyzing <svg
-                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-arrow-right-short" viewBox="0 0 16 16">
+            <button class="btn btn-light start-btn rounded-pill mb-5"
+                onclick="location.href='{% url 'analysis' %}'">Search Teams <svg xmlns="http://www.w3.org/2000/svg"
+                    width="16" height="16" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
                         d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8" />
                 </svg></button>
@@ -253,13 +253,12 @@
                         <li class="list-group-item">Chicago Bulls</li>
                         <li class="list-group-item">Miami Heat</li>
                     </ol>
-                    <button class="btn btn-outline-light nav-start-btn rounded-pill mx-auto mt-1">Start
-                        analyzing</button>
+                    <button class="btn btn-outline-light nav-start-btn rounded-pill mx-auto mt-1">View Rankings</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-5 comparison">
         <div class="col-10 mx-auto">
             <p class="compare-title">Comparison Tool</p>
             <h2 class="comparison-title">Analyze and compare the team data.</h2>

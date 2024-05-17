@@ -1,0 +1,111 @@
+{% extends "sentiment/base.html" %}
+{% load static %}
+{% block title %}Analyze NBA Sentiment{% endblock %}
+
+{% block head %}
+<!-- AUTO-COMPLETE -->
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.01.min.css">
+
+<!-- CUSTOM CSS -->
+<link rel="stylesheet" href="{% static 'sentiment/css/analysis.css' %}">
+
+
+{% endblock %}
+
+{% block content %}
+
+<div class="analysis-content">
+    <h1 class="title">Analyze NBA Team Sentiment</h1>
+    <p>Use the search bar below to select a team and start analyzing fan sentiment.</p>
+
+    <form id="team-form" autocomplete="off" hx-get="{% url 'get_team_data'%}" hx-trigger="submit"
+        hx-target="#selected-team">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <input type="text" class="form-control mt-4" name="team_name" placeholder="Search for a team..."
+                id="autoComplete">
+        </div>
+    </form>
+    <h2 id="selected-team"></h2>
+
+    <!-- Add any other introductory information or options here -->
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+<script>
+    const autoCompleteJS = new autoComplete({
+        selector: "#autoComplete",
+        placeHolder: "Search for a team...",
+        threshold: 2,
+        submit: true,
+        data: {
+            src: [
+                "Atlanta Hawks",
+                "Boston Celtics",
+                "Brooklyn Nets",
+                "Charlotte Hornets",
+                "Chicago Bulls",
+                "Cleveland Cavaliers",
+                "Dallas Mavericks",
+                "Denver Nuggets",
+                "Detroit Pistons",
+                "Golden State Warriors",
+                "Houston Rockets",
+                "Indiana Pacers",
+                "LA Clippers",
+                "Los Angeles Lakers",
+                "Memphis Grizzlies",
+                "Miami Heat",
+                "Milwaukee Bucks",
+                "Minnesota Timberwolves",
+                "New Orleans Pelicans",
+                "New York Knicks",
+                "Oklahoma City Thunder",
+                "Orlando Magic",
+                "Philadelphia 76ers",
+                "Phoenix Suns",
+                "Portland Trail Blazers",
+                "Sacramento Kings",
+                "San Antonio Spurs",
+                "Toronto Raptors",
+                "Utah Jazz",
+                "Washington Wizards"
+            ],
+            cache: true,
+        },
+        resultsList: {
+            element: (list, data) => {
+                if (!data.results.length) {
+                    const message = document.createElement("div");
+                    message.setAttribute("class", "no_result");
+                    message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+                    list.prepend(message);
+                }
+            },
+            noResults: true,
+            maxResults: 5,
+        },
+        resultItem: {
+            highlight: true,
+            selected: "autoComplete_selected",
+        },
+        events: {
+            input: {
+                selection: (event) => {
+                    const selection = event.detail.selection.value;
+                    autoCompleteJS.input.value = selection;
+                }
+            }
+        }
+
+    });
+    document.getElementById("team-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        const teamName = document.getElementById("autoComplete").value;
+        // document.getElementById("selected-team").innerText = teamName;
+    });
+</script>
+
+{% endblock %}

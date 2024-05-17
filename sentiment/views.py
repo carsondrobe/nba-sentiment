@@ -1,3 +1,4 @@
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from nltk.sentiment import SentimentIntensityAnalyzer
 from nba_api.stats.static import teams
@@ -205,3 +206,12 @@ def team_detail(request, team_name):
         "sentiment/team_detail.html",
         {"team": team, "score": team.avg_compound_score},
     )
+
+
+def analysis(request):
+    return render(request, "sentiment/analysis.html")
+
+
+def get_team_data(request):
+    html = "Team Data"
+    return HttpResponse(html)
