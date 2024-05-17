@@ -12,7 +12,7 @@ ul {
     width: 30%;
 }
 
-h1 {
+.title {
     font-size: 3.5em;
     margin-top: 2em;
     margin-bottom: 1em;
@@ -106,4 +106,42 @@ h2 {
     background-size: 20% 100%, 20% 100%, cover;
     background-position: right center, center center;
     background-repeat: no-repeat;
+}
+
+.rankings {
+    margin-top: 3rem;
+}
+
+.rank-title {
+    font-weight: bold;
+    margin-top: -0.5rem;
+}
+
+.start-rank {
+    padding-top: 15rem;
+}
+
+.ranking-card,
+.card-body {
+    background-color: black;
+}
+
+.card {
+    transition: all .3s ease-in-out;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.374);
+}
+
+.card:hover {
+    outline: none;
+    box-shadow: 0 0 8px rgba(243, 201, 125, 0.374);
+    transform: translate3d(0px, -1px, 0px);
+}
+
+.list-group-item {
+    background-color: black;
+    color: rgb(210, 210, 210);
+}
+
+.comparison-title {
+    margin-top: -0.5rem;
 }
