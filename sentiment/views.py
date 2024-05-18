@@ -214,10 +214,6 @@ def analysis(request):
 
 def get_team_data(request):
     team = NBATeam.objects.get(team_name=request.GET.get("team_name"))
-    team_name = team.team_name
-    team_logo = team.logo.url
-    html = f"""<div class="d-flex align-items-center">
-                <h2 class="mr-2">{ team_name }</h2>
-                <img src="{ team_logo }" alt="Team Logo" style="max-width: 100px;">
-            </div>"""
+    context = {"team": team}
+    html = render(request, "sentiment/team_data.html", context)
     return HttpResponse(html)

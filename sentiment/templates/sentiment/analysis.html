@@ -19,17 +19,15 @@
     <h1 class="title">Analyze NBA Team Sentiment</h1>
     <p>Use the search bar below to select a team and start analyzing fan sentiment.</p>
 
-    <form id="team-form" autocomplete="off" hx-get="{% url 'get_team_data'%}" hx-swap="outerhtml" hx-trigger="submit"
+    <form id="team-form" autocomplete="off" hx-get="{% url 'get_team_data'%}" hx-swap="outerHTML" hx-trigger="submit"
         hx-target="#selected-team">
         {% csrf_token %}
         <div class="input-group mb-3">
-            <input type="text" class="form-control mt-4" name="team_name" placeholder="Search for a team..."
+            <input type="text" class="form-control mt-4 mb-3" name="team_name" placeholder="Search for a team..."
                 id="autoComplete">
         </div>
     </form>
-    <h2 id="selected-team" class="mt-5"></h2>
-
-    <!-- Add any other introductory information or options here -->
+    <div id="selected-team"></div>
 
 </div>
 
